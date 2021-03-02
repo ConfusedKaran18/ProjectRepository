@@ -1,0 +1,51 @@
+﻿@model List<Category>
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Product</h2>
+
+<form method="post" id="createProduct">
+    <!--will go to the action Create-->
+
+    <label>Category</label>
+    <select name="CategoryID">
+        @foreach (var category in Model)
+        {
+            <option value="@category.ID">@category.Name</option>
+        }
+    </select>
+    <br>
+
+    <label>Name</label>
+    <input name="Name"> <!--without the name attribute the input will not be sent-->
+    <br>
+
+    <label>Description</label>
+    <input name="Description"> <!--without the name attribute the input will not be sent-->
+    <br>
+
+    <label>Price</label>
+    <input name="Price"> <!--without the name attribute the input will not be sent-->
+    <br>
+    <button id="saveBtn" type="button">Save</button>
+</form>
+
+<script>
+    $("#saveBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Product/Create",
+            data: $("#createProduct").serialize()
+        })
+            .done(function (response) {
+                alert(response);
+                $("#productTableContainer").html(response)
+                $("#productActionContainer").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAILED");
+            })
+    });
+</script>
+

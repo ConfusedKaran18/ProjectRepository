@@ -1,0 +1,85 @@
+﻿@model Category
+@{
+    ViewBag.Title = "Edit";
+
+    var trueChecked = Model.IsFeatured ? "checked" : string.Empty;
+    var falseChecked = !Model.IsFeatured ? "checked" : string.Empty;
+    //var imageName = Path.GetFileName("@Model.ImageURL");
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<h2>Edit Category</h2>
+
+<form id="editCategory">
+    <input name="ID" type="hidden" value="@Model.ID">
+    <br>
+
+    <label>Name</label>
+    <input name="Name" value="@Model.Name">
+    <br>
+
+    <label>Description</label>
+    <input name="Description" value="@Model.Description">
+    <br>
+
+    <label>Image</label>
+    <input name="ImageURL" id="editImageURL" type="hidden" />
+    <input type="text" value="@imageName" />
+    <input id="imageUpload" name="Image" type="file" accept=".jpg, .png, .jpeg" />  @*without the name attribute the input will not be sent*@
+    <img id="editCategoryImage" src="@Model.ImageURL" />
+    <br>
+
+    <label>Feature this Category :</label>
+    <input name="IsFeatured" type="radio" value="True" @trueChecked> True  @*without the name attribute the input will not be sent*@
+    <input name="IsFeatured" type="radio" value="False" @falseChecked> False
+    <br>
+
+    <button id="updateBtn" type="button">Update</button>
+</form>
+
+<script>
+    $("#updateBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Category/Edit",
+            data: $("#editCategory").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAILED");
+            })
+    });
+
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Shared/UploadImage",
+            datatype: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+                if (response.Success) {
+                    $("#editImageURL").val(response.ImageURL);
+                    $("#editCategoryImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (xmlhttprequest, textstatus, errorthrown) {
+                alert("FAILED");
+            });
+    });
+</script>

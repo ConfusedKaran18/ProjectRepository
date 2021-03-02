@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<h2>Create Category</h2>
+
+@*<div class="arcticmodal-overlay" style="background-color: rgb(255, 255, 255); opacity: 0.92;"></div>
+    <div class="arcticmodal-container" style="">
+        <table class="arcticmodal-container_i">
+            <tbody>
+                <tr>
+                    <td class="arcticmodal-container_i2">
+                        <form method="post" id="createCategory">
+                            <div class="modal modal_default registration" id="registration">
+                                <div class="modal_wrap">
+                                    <div class="modal-top">
+                                        <h2 class="title modal-title">Create Category</h2>
+                                        <div class="fields">
+                                            <div class="input_wrap fullwrap">
+                                                <input type="text" class="input" placeholder="Name" name="Name">
+                                            </div>
+                                            <div class="input_wrap fullwrap">
+                                                <input type="text" class="input" placeholder="Description" name="Description">
+                                            </div>
+                                            <div class="userpic-block">
+                                                <div class="userpic"></div>
+                                                <div class="change">
+                                                    <label for="change-userpic-modal">Select category image</label>
+                                                    <input type="file" id="change-userpic-modal">
+                                                    <input name="ImageURL" type="hidden" />
+                                                    <input id="imageUpload" name="Image" type="file" accept=".jpg, .png, .jpeg" />
+                                                    <img id="categoryImage" />
+                                                </div>
+                                                <button class="btn submit-btn" id="saveBtn" type="button"><span>Save Category</span></button>
+                                            </div>
+                                            <div class="modal_close"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>*@
+<form method="post" id="createCategory">
+    @*will go to the action Create*@
+    <label>Name</label>
+    <input name="Name">     @*without the name attribute the input will not be sent*@
+    <br>
+
+    <label>Description</label>
+    <input name="Description">  @*without the name attribute the input will not be sent*@
+    <br>
+
+    <label>Image</label>
+    <input name="ImageURL" type="hidden" id="imageURL" />
+    <input id="imageUpload" name="Image" type="file" accept=".jpg, .png, .jpeg" />   @*without the name attribute the input will not be sent*@
+    <img id="categoryImage" width="300" height="400" />
+    <br>
+
+    <label>Feature this Category :</label>
+    <input name="IsFeatured" type="radio" value="True"> True  @*without the name attribute the input will not be sent*@
+    <input name="IsFeatured" type="radio" value="False"> False
+    <br>
+
+    <button id="saveBtn" type="button">Save</button>
+</form>
+
+<script>
+    $("#saveBtn").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Category/Create",
+            data: $("#createCategory").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response)
+                $("#actionContainer").html("")
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAILED");
+            })
+    });
+
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Shared/UploadImage",
+            datatype: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+                if (response.Success) {
+                    $("#imageURL").val(response.imageURL);
+                    $("#categoryImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (xmlhttprequest, textstatus, errorthrown) {
+                alert("FAILED");
+            });
+    });
+
+</script>
+
+

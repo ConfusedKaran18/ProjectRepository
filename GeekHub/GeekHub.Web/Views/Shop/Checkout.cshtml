@@ -1,0 +1,108 @@
+﻿@model GeekHub.Web.ViewModels.CheckoutViewModel
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<h2>Checkout</h2>
+
+@if (Model != null)
+{
+    if (Model.CartProducts != null && Model.CartProducts.Count != 0)
+    {
+        <div class="page cart">
+            <div class="wrap">
+                <div class="wrap_float">
+                    <div class="breadcrumbs">
+                        <a href="/">Home</a> - <a href="#" class="current">Cart</a>
+                    </div>
+                    <div class="title-block">
+                        <h1 class="title">Cart <span class="count">@Model.CartProducts.Count</span></h1>
+                    </div>
+                    <div class="cart-block">
+                        <div class="cart-block-left">
+                            <div class="table">
+                                <div class="thead">
+                                    <div class="td product-td">Product / Price</div>
+                                    <div class="td quantity-td">Quantity</div>
+                                    <div class="td cost-td">Total</div>
+                                </div>
+                                <div class="tbody">
+                                    @foreach (var product in Model.CartProducts)
+                                    {
+                                        <div class="tr">
+                                            <div class="td product-td">
+                                                <a href="catalog-item.html">
+                                                    <div class="img ie-img">
+                                                        <img src="img/demo-bg.jpg" alt="">
+                                                        <div class="size">S</div>
+                                                    </div>
+                                                    <h3 class="_title">@product.Name</h3>
+                                                    <div class="_cost">@product.Price</div>
+                                                </a>
+                                            </div>
+                                            <div class="td quantity-td">
+                                                <div class="number_wrap">
+                                                    <button class="minus"></button>
+                                                    <input type="number" class="num js_number" value="1" max="100" min="1" data-maxlength="3">
+                                                    <button class="plus"></button>
+                                                </div>
+                                            </div>
+                                            <div class="td cost-td">$1455.00</div>
+                                            <button class="remove"></button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-block-right">
+                            <div class="order-info">
+                                <div class="info-list">
+                                    <div class="list-item">
+                                        <div class="_left">Subtotal</div>
+                                        <div class="_right">$1455.00</div>
+                                    </div>
+                                    <div class="list-item">
+                                        <div class="_left">Shipping <br>to Russia</div>
+                                        <div class="_right">
+                                            Flat rate: $11.00
+                                            <br>
+                                            <a class="address_link" id="address_link">Change address</a>
+                                        </div>
+                                        <div class="address-form" id="address-form">
+                                            <input type="text" placeholder="Russia" class="input" value="USA">
+                                            <input type="text" placeholder="State / Country" class="input" value="Texas">
+                                            <input type="text" placeholder="Town / City" class="input">
+                                            <input type="text" placeholder="Postcode / ZIP" class="input">
+                                            <button class="save">Save</button>
+                                        </div>
+                                    </div>
+                                    <div class="list-item total">
+                                        <div class="_left">Total</div>
+                                        <div class="_right">$1455.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="next-step">
+                                <span>Proceed to checkout</span>
+                            </a>
+                            <div class="coupon-block">
+                                <div class="_title">Coupon</div>
+                                <div class="_subtitle">Enter your coupon code if you have one.</div>
+                                <form class="form">
+                                    <input type="text" class="input" placeholder="Coupon code">
+                                    <button class="submit">Apply</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div>
+            No Products In The Cart
+        </div>
+    }
+}
