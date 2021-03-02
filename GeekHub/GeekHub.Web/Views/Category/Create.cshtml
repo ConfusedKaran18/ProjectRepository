@@ -58,7 +58,7 @@
     <br>
 
     <label>Image</label>
-    <input name="ImageURL" type="hidden" id="imageURL" />
+    <input name="ImageURL" type="hidden" id="categoryImageURL" />
     <input id="imageUpload" name="Image" type="file" accept=".jpg, .png, .jpeg" />   @*without the name attribute the input will not be sent*@
     <img id="categoryImage" width="300" height="400" />
     <br>
@@ -107,7 +107,7 @@
             .done(function (response) {
                 console.log(response);
                 if (response.Success) {
-                    $("#imageURL").val(response.imageURL);
+                    $("#categoryImageURL").val(response.ImageURL);
                     $("#categoryImage").attr("src", response.ImageURL);
                 }
             })

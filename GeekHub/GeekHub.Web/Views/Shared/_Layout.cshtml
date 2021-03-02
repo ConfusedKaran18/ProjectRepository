@@ -12,7 +12,7 @@
     HomeViewModel model = new HomeViewModel();
     model.Categories = categoryService.GetCategories();
 
-    var firstCategory = model.Categories.First();
+    var firstCategory = model.Categories.Where(category => category.ImageURL != null).First();
 }
 <!DOCTYPE html>
 <html>
@@ -243,7 +243,7 @@
                             <div class="items">
                                 <a href="shop-catalog-3-items.html" class="item">
                                     <div class="_image">
-                                        <img src="@firstCategory.ImageURL" alt="">
+                                        <img src="@firstCategory.ImageURL"alt="">
                                     </div>
                                     <div class="_title">
                                         @firstCategory.Name<span></span>

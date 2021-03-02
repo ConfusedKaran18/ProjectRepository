@@ -25,6 +25,12 @@
     <input name="Description"> <!--without the name attribute the input will not be sent-->
     <br>
 
+    <label>Image</label>
+    <input name="ImageURL" type="hidden" id="productImageURL" />
+    <input id="imageUpload" name="Image" type="file" accept=".jpg, .png, .jpeg" />   @*without the name attribute the input will not be sent*@
+    <img id="productImage" width="300" height="400" />
+    <br>
+
     <label>Price</label>
     <input name="Price"> <!--without the name attribute the input will not be sent-->
     <br>
@@ -46,6 +52,35 @@
             .fail(function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("FAILED");
             })
+    });
+
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Shared/UploadImage",
+            datatype: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+                if (response.Success) {
+                    $("#productImageURL").val(response.ImageURL);
+                    $("#productImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (xmlhttprequest, textstatus, errorthrown) {
+                alert("FAILED");
+            });
     });
 </script>
 
