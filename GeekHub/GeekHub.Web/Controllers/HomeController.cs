@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GeekHub.Services;
+using GeekHub.Web.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +12,10 @@ namespace GeekHub.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            CategoryService categoryService = new CategoryService();
+            HomeViewModel featuredModel = new HomeViewModel();
+            featuredModel.FeaturedCategories = categoryService.GetFeaturedCategories();
+            return View(featuredModel);
         }
 
         public ActionResult About()

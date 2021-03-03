@@ -9,10 +9,10 @@
 
 @{
     CategoryService categoryService = new CategoryService();
-    HomeViewModel model = new HomeViewModel();
-    model.Categories = categoryService.GetCategories();
+    HomeViewModel featuredModel = new HomeViewModel();
+    //featuredModel.Categories = categoryService.GetFeaturedCategories();
 
-    var firstCategory = model.Categories.Where(category => category.ImageURL != null).First();
+    //var firstCategory = featuredModel.Categories.Where(category => category.IsFeatured != false && category.ImageURL != null);
 }
 <!DOCTYPE html>
 <html>
@@ -241,14 +241,17 @@
                     <div class="wrap">
                         <div class="wrap_float">
                             <div class="items">
-                                <a href="shop-catalog-3-items.html" class="item">
-                                    <div class="_image">
-                                        <img src="@firstCategory.ImageURL"alt="">
-                                    </div>
-                                    <div class="_title">
-                                        @firstCategory.Name<span></span>
-                                    </div>
-                                </a>
+                                @*@foreach (var category in firstCategory)
+                                {
+                                    <a href="shop-catalog-3-items.html" class="item">
+                                        <div class="_image">
+                                            <img src ="@category.ImageURL"alt="">
+                                        </div>
+                                        <div class="_title">
+                                            @category.Name<span></span>
+                                        </div>
+                                    </a>
+                                }*@
 
                                 <a href="shop-catalog-3-items.html" class="item">
                                     <div class="_image">

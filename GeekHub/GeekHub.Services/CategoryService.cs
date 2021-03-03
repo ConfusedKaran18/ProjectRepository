@@ -35,7 +35,7 @@ namespace GeekHub.Services
             }
         }
 
-        public List<Category> GetfeaturedCategories()
+        public List<Category> GetFeaturedCategories()
         {
             using (var context = new GeekHubContext())
             {
